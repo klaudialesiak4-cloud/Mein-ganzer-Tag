@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mein Tag">
+<meta name="theme-color" content="#0d1117">
+<title>Mein Tag · Briefing & Planung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #1c2330;
+  --border: rgba(255,255,255,0.08);
+  --gold: #e6b84a;
+  --gold-soft: rgba(230,184,74,0.12);
+  --gold-border: rgba(230,184,74,0.25);
+  --text: #e8e3d8;
+  --muted: rgba(232,227,216,0.45);
+  --dim: rgba(232,227,216,0.7);
+  --red: #e05a47;
+  --green: #4caf7d;
+  --blue: #5b9cf6;
+  --orange: #f0923a;
+  --purple: #a78bfa;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 20px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Nunito',sans-serif;
+  display:flex;
+  flex-direction:column;
+  background-image:
+    radial-gradient(ellipse 70% 30% at 50% 0%, rgba(230,184,74,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 80%, rgba(91,156,246,0.04) 0%, transparent 50%);
+}
+
+/* ── TOP NAV ── */
+.topbar{
+  padding: calc(var(--safe-top) + 14px) 20px 0;
+  flex-shrink:0;
+}
+.topbar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.app-title{
+  font-family:'Lora',serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--text);
+  letter-spacing:-0.3px;
+}
+.app-title span{color:var(--gold);}
+.date-chip{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:5px 12px;
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:0.05em;
+}
+
+/* ── TAB BAR ── */
+.tabs{
+  display:flex;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:3px;
+  margin-bottom:0;
+}
+.tab{
+  flex:1;
+  padding:8px 4px;
+  text-align:center;
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  border-radius:9px;
+  cursor:pointer;
+  transition:all 0.2s;
+  letter-spacing:0.02em;
+}
+.tab.active{
+  background:var(--bg3);
+  color:var(--gold);
+  box-shadow:0 1px 6px rgba(0,0,0,0.4);
+}
+.tab-icon{font-size:15px;display:block;margin-bottom:2px;}
+
+/* ── SCROLL AREA ── */
+.scroll-area{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 16px calc(var(--safe-bottom) + 16px);
+  -webkit-overflow-scrolling:touch;
+}
+.scroll-area::-webkit-scrollbar{width:0;}
+
+/* ── PAGES ── */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── CARDS ── */
+.card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  margin-bottom:12px;
+  overflow:hidden;
+  animation:up 0.35s ease both;
+}
+@keyframes up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.card:nth-child(2){animation-delay:.05s;}
+.card:nth-child(3){animation-delay:.1s;}
+.card:nth-child(4){animation-delay:.15s;}
+.card:nth-child(5){animation-delay:.2s;}
+
+.card-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 16px 12px;
+  border-bottom:1px solid var(--border);
+}
+.chip{
+  width:28px;height:28px;
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.card-label{
+  font-size:10px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:600;
+}
+.card-body{padding:14px 16px 16px;}
+
+/* ── BRIEFING STYLES ── */
+.weather-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.weather-hl{font-family:'Lora',serif;font-size:19px;line-height:1.25;color:var(--text);flex:1;}
+.weather-badge{
+  background:var(--gold-soft);
+  border:1px solid var(--gold-border);
+  border-radius:10px;
+  padding:8px 12px;
+  text-align:center;flex-shrink:0;
+}
+.weather-badge .temp{font-family:'Lora',serif;font-size:20px;color:var(--gold);}
+.weather-badge .tl{font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);}
+.weather-detail{font-size:12.5px;line-height:1.65;color:var(--dim);margin-bottom:10px;}
+.pills{display:flex;gap:6px;flex-wrap:wrap;}
+.pill{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--muted);}
+
+.cal-item{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);}
+.cal-item:last-child{border-bottom:none;padding-bottom:0;}
+.cal-time{font-size:11.5px;font-weight:600;color:var(--gold);min-width:40px;flex-shrink:0;padding-top:2px;}
+.cal-name{font-size:13.5px;color:var(--text);}
+.cal-loc{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.news-item{padding:11px 0;border-bottom:1px solid var(--border);}
+.news-item:first-child{padding-top:0;}
+.news-item:last-child{border-bottom:none;padding-bottom:0;}
+.news-cat{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:4px;font-weight:600;}
+.news-head{font-family:'Lora',serif;font-size:14.5px;line-height:1.3;color:var(--text);margin-bottom:4px;}
+.news-sum{font-size:12px;line-height:1.6;color:var(--muted);}
+
+/* ── BRIEFING BUTTON ── */
+.btn-brief{
+  width:100%;
+  background:linear-gradient(135deg,var(--gold),#c99a2e);
+  border:none;border-radius:12px;
+  padding:14px;
+  font-family:'Nunito',sans-serif;
+  font-size:14px;font-weight:700;
+  color:#0d1117;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:14px;
+  transition:opacity .2s,transform .15s;
+}
+.btn-brief:active{opacity:.85;transform:scale(.98);}
+.btn-brief:disabled{opacity:.5;}
+
+/* progress bar */
+.prog-wrap{background:var(--bg3);border-radius:3px;height:3px;margin-bottom:14px;display:none;overflow:hidden;}
+.prog-bar{height:100%;background:var(--gold);border-radius:3px;transition:width .5s ease;width:0%;}
+
+/* ── PLANNER ── */
+.planner-cats{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none;}
+.planner-cats::-webkit-scrollbar{display:none;}
+.cat-btn{
+  flex-shrink:0;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:7px 14px;
+  font-size:12px;font-weight:600;
+  color:var(--muted);
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.cat-btn.active{color:#0d1117;border-color:transparent;}
+
+/* category colors */
+.cat-training .cat-btn.active,.cat-training .routine-check:checked+.routine-label .ri{color:var(--orange);}
+.cat-hausarbeit .cat-btn.active,.cat-einkaufen .cat-btn.active,.cat-medizin .cat-btn.active{}
+
+.cat-training [data-cat="training"].cat-btn.active{background:var(--orange);}
+[data-cat="hausarbeit"].cat-btn.active{background:var(--blue);}
+[data-cat="einkaufen"].cat-btn.active{background:var(--green);}
+[data-cat="medizin"].cat-btn.active{background:var(--purple);}
+
+/* ── TASK SECTION ── */
+.task-section{display:none;}
+.task-section.visible{display:block;}
+
+.section-title{
+  font-size:11px;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;margin-bottom:10px;margin-top:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Routine item */
+.routine-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;
+  background:var(--bg3);
+  border-radius:10px;
+  margin-bottom:7px;
+  cursor:pointer;
+  transition:opacity .2s;
+}
+.routine-item.done{opacity:0.4;}
+.r-check{
+  width:22px;height:22px;flex-shrink:0;
+  border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+  transition:all .2s;
+}
+.routine-item.done .r-check{
+  background:var(--green);
+  border-color:var(--green);
+}
+.r-label{font-size:13.5px;color:var(--text);flex:1;}
+.routine-item.done .r-label{text-decoration:line-through;color:var(--muted);}
+.r-time{font-size:10px;color:var(--muted);}
+
+/* Free tasks */
+.free-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  background:var(--bg3);
+  border-radius:10px;
+  margin-bottom:7px;
+}
+.free-item.done{opacity:0.4;}
+.free-item .r-check{cursor:pointer;}
+.free-item.done .r-check{background:var(--green);border-color:var(--green);}
+.free-label{font-size:13px;color:var(--text);flex:1;}
+.free-item.done .free-label{text-decoration:line-through;color:var(--muted);}
+.del-btn{background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:2px 4px;line-height:1;}
+.del-btn:active{color:var(--red);}
+
+/* Add task */
+.add-task-row{
+  display:flex;gap:8px;margin-top:10px;
+}
+.add-input{
+  flex:1;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:13px;font-family:'Nunito',sans-serif;
+  color:var(--text);
+  outline:none;
+}
+.add-input::placeholder{color:var(--muted);}
+.add-input:focus{border-color:var(--gold-border);}
+.add-btn{
+  background:var(--gold-soft);
+  border:1px solid var(--gold-border);
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:18px;cursor:pointer;
+  color:var(--gold);
+  transition:background .2s;
+}
+.add-btn:active{background:rgba(230,184,74,0.25);}
+
+/* ── PROGRESS RING ── */
+.progress-summary{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  margin-bottom:12px;
+}
+.ring-wrap{position:relative;width:52px;height:52px;flex-shrink:0;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--bg3);stroke-width:5;}
+.ring-fg{fill:none;stroke:var(--gold);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .5s ease;}
+.ring-txt{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--gold);
+}
+.summary-text{}
+.summary-title{font-family:'Lora',serif;font-size:16px;color:var(--text);margin-bottom:2px;}
+.summary-sub{font-size:11.5px;color:var(--muted);}
+
+/* ── EMPTY / LOADING ── */
+.empty{text-align:center;padding:32px 16px;}
+.empty-icon{font-size:40px;margin-bottom:12px;}
+.empty-t{font-family:'Lora',serif;font-size:19px;color:var(--text);margin-bottom:6px;}
+.empty-s{font-size:13px;color:var(--muted);line-height:1.6;}
+.load-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  padding:28px;margin-bottom:12px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.spin{width:26px;height:26px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.load-lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+
+/* ── INSTALL BANNER ── */
+.install-banner{
+  background:rgba(230,184,74,0.1);
+  border:1px solid var(--gold-border);
+  border-radius:12px;padding:12px 14px;
+  margin-bottom:12px;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.ib-text{flex:1;}
+.ib-title{font-size:12.5px;font-weight:700;color:var(--gold);margin-bottom:2px;}
+.ib-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.ib-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="app-title">Mein <span>Tag</span> ☀️</div>
+    <div class="date-chip" id="dateChip"></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('briefing')">
+      <span class="tab-icon">📰</span>Briefing
+    </div>
+    <div class="tab" onclick="switchTab('planner')">
+      <span class="tab-icon">✅</span>Planung
+    </div>
+  </div>
+</div>
+
+<!-- SCROLL AREA -->
+<div class="scroll-area" id="scrollArea">
+
+  <!-- ══ BRIEFING PAGE ══ -->
+  <div class="page active" id="page-briefing">
+
+    <div id="installBanner" class="install-banner">
+      <div style="font-size:20px;flex-shrink:0;">📲</div>
+      <div class="ib-text">
+        <div class="ib-title">Zum Startbildschirm hinzufügen</div>
+        <div class="ib-desc">iOS: Teilen → „Zum Home-Bildschirm" · Android: Menü → „App installieren"</div>
+      </div>
+      <button class="ib-close" onclick="this.parentElement.style.display='none'">×</button>
+    </div>
+
+    <button class="btn-brief" id="btnBrief" onclick="loadBriefing()">
+      <span>✦</span><span id="btnTxt">Briefing laden</span>
+    </button>
+    <div class="prog-wrap" id="progWrap"><div class="prog-bar" id="progBar"></div></div>
+
+    <div id="briefOutput">
+      <div class="empty">
+        <div class="empty-icon">🗞️</div>
+        <div class="empty-t">Bereit für deinen Tag</div>
+        <div class="empty-s">Tippe auf „Briefing laden" für<br>Wetter, Termine & aktuelle News.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PLANNER PAGE ══ -->
+  <div class="page" id="page-planner">
+
+    <!-- Progress ring -->
+    <div class="progress-summary" id="progressSummary">
+      <div class="ring-wrap">
+        <svg width="52" height="52" viewBox="0 0 52 52">
+          <circle class="ring-bg" cx="26" cy="26" r="21"/>
+          <circle class="ring-fg" id="ringFg" cx="26" cy="26" r="21"
+            stroke-dasharray="131.9" stroke-dashoffset="131.9"/>
+        </svg>
+        <div class="ring-txt" id="ringTxt">0%</div>
+      </div>
+      <div class="summary-text">
+        <div class="summary-title" id="summaryTitle">Guten Morgen! 👋</div>
+        <div class="summary-sub" id="summarySub">Noch keine Aufgaben erledigt.</div>
+      </div>
+    </div>
+
+    <!-- Category filter -->
+    <div class="planner-cats">
+      <div class="cat-btn active" data-cat="all" onclick="filterCat('all')">🗂 Alle</div>
+      <div class="cat-btn" data-cat="training" onclick="filterCat('training')">💪 Training</div>
+      <div class="cat-btn" data-cat="hausarbeit" onclick="filterCat('hausarbeit')">🏠 Hausarbeit</div>
+      <div class="cat-btn" data-cat="einkaufen" onclick="filterCat('einkaufen')">🛒 Einkaufen</div>
+      <div class="cat-btn" data-cat="medizin" onclick="filterCat('medizin')">💊 Gesundheit</div>
+    </div>
+
+    <!-- Training -->
+    <div class="task-section visible" id="sec-training">
+      <div class="section-title" style="color:var(--orange);">💪 Training & Sport</div>
+      <div id="routines-training"></div>
+      <div id="free-training"></div>
+      <div class="add-task-row">
+        <input class="add-input" id="inp-training" placeholder="+ Aufgabe hinzufügen…" onkeydown="if(event.key==='Enter')addFree('training')">
+        <button class="add-btn" onclick="addFree('training')">+</button>
+      </div>
+    </div>
+
+    <!-- Hausarbeit -->
+    <div class="task-section" id="sec-hausarbeit">
+      <div class="section-title" style="color:var(--blue);">🏠 Hausarbeit</div>
+      <div id="routines-hausarbeit"></div>
+      <div id="free-hausarbeit"></div>
+      <div class="add-task-row">
+        <input class="add-input" id="inp-hausarbeit" placeholder="+ Aufgabe hinzufügen…" onkeydown="if(event.key==='Enter')addFree('hausarbeit')">
+        <button class="add-btn" onclick="addFree('hausarbeit')">+</button>
+      </div>
+    </div>
+
+    <!-- Einkaufen -->
+    <div class="task-section" id="sec-einkaufen">
+      <div class="section-title" style="color:var(--green);">🛒 Einkaufen</div>
+      <div id="routines-einkaufen"></div>
+      <div id="free-einkaufen"></div>
+      <div class="add-task-row">
+        <input class="add-input" id="inp-einkaufen" placeholder="+ Artikel hinzufügen…" onkeydown="if(event.key==='Enter')addFree('einkaufen')">
+        <button class="add-btn" onclick="addFree('einkaufen')">+</button>
+      </div>
+    </div>
+
+    <!-- Medizin -->
+    <div class="task-section" id="sec-medizin">
+      <div class="section-title" style="color:var(--purple);">💊 Gesundheit</div>
+      <div id="routines-medizin"></div>
+      <div id="free-medizin"></div>
+      <div class="add-task-row">
+        <input class="add-input" id="inp-medizin" placeholder="+ Aufgabe hinzufügen…" onkeydown="if(event.key==='Enter')addFree('medizin')">
+        <button class="add-btn" onclick="addFree('medizin')">+</button>
+      </div>
+    </div>
+
+    <!-- Reset button -->
+    <div style="text-align:center;padding:20px 0 8px;">
+      <button onclick="resetDay()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:8px 18px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;">🔄 Tag zurücksetzen</button>
+    </div>
+
+  </div><!-- end planner -->
+</div><!-- end scroll area -->
+
+<script>
+// ── DATE ──────────────────────────────────────────────
+const now = new Date();
+const DE_DAYS=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+const DE_MONTHS=['Jänner','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+document.getElementById('dateChip').textContent =
+  `${DE_DAYS[now.getDay()]}, ${now.getDate()}. ${DE_MONTHS[now.getMonth()]}`;
+
+// Hide install banner if standalone
+if(window.navigator.standalone || window.matchMedia('(display-mode:standalone)').matches){
+  const b = document.getElementById('installBanner');
+  if(b) b.style.display='none';
+}
+
+// PWA manifest
+const mf={name:"Mein Tag · Briefing",short_name:"Mein Tag",start_url:"./",display:"standalone",
+  background_color:"#0d1117",theme_color:"#0d1117",
+  icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%230d1117'/%3E%3Ctext x='96' y='130' font-size='100' text-anchor='middle'%3E☀️%3C/text%3E%3C/svg%3E",sizes:"192x192",type:"image/svg+xml"}]};
+const mfURL=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/json'}));
+const lnk=document.createElement('link');lnk.rel='manifest';lnk.href=mfURL;document.head.appendChild(lnk);
+
+// ── ROUTINES CONFIG ────────────────────────────────────
+const ROUTINES = {
+  training: [
+    {id:'t1', label:'Morgenspaziergang / Laufen', time:'Morgens'},
+    {id:'t2', label:'Krafttraining', time:'Nach Wahl'},
+    {id:'t3', label:'Dehnübungen / Stretching', time:'Täglich'},
+    {id:'t4', label:'Treppe statt Lift', time:'Täglich'},
+  ],
+  hausarbeit: [
+    {id:'h1', label:'Wohnung aufräumen', time:'Täglich'},
+    {id:'h2', label:'Bett machen', time:'Morgens'},
+    {id:'h3', label:'Staubsaugen', time:'Nach Bedarf'},
+    {id:'h4', label:'Küche reinigen', time:'Nach dem Essen'},
+    {id:'h5', label:'Wäsche waschen', time:'Nach Bedarf'},
+  ],
+  einkaufen: [
+    {id:'e1', label:'Einkaufsliste prüfen', time:'Täglich'},
+    {id:'e2', label:'Frische Lebensmittel', time:'2× wöchentlich'},
+  ],
+  medizin: [
+    {id:'m1', label:'Morgen-Medikamente', time:'Morgens'},
+    {id:'m2', label:'Abend-Medikamente', time:'Abends'},
+    {id:'m3', label:'Wasser trinken (2L)', time:'Täglich'},
+    {id:'m4', label:'Arzt / Termine prüfen', time:'Wöchentlich'},
+  ],
+};
+
+// ── STATE (localStorage-fallback, prefer window.storage) ──
+let state = { done:{}, free:{training:[],hausarbeit:[],einkaufen:[],medizin:[]}, day:todayKey };
+
+async function loadState(){
+  try {
+    const r = await window.storage.get('meinTag-state');
+    if(r){ const s=JSON.parse(r.value); if(s.day===todayKey){ state=s; } }
+  } catch(e){
+    // fallback: sessionStorage
+    try{const s=JSON.parse(sessionStorage.getItem('meinTag')||'null');if(s&&s.day===todayKey)state=s;}catch(_){}
+  }
+  renderPlanner();
+}
+
+async function saveState(){
+  state.day=todayKey;
+  try{ await window.storage.set('meinTag-state',JSON.stringify(state)); }
+  catch(e){ try{sessionStorage.setItem('meinTag',JSON.stringify(state));}catch(_){} }
+}
+
+// ── RENDER PLANNER ─────────────────────────────────────
+function renderPlanner(){
+  const cats=['training','hausarbeit','einkaufen','medizin'];
+  let total=0, done=0;
+
+  cats.forEach(cat=>{
+    // Routines
+    const rWrap=document.getElementById('routines-'+cat);
+    rWrap.innerHTML='';
+    if(ROUTINES[cat].length){
+      const ttl=document.createElement('div');
+      ttl.style.cssText='font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600;';
+      ttl.textContent='Routinen';
+      rWrap.appendChild(ttl);
+    }
+    ROUTINES[cat].forEach(r=>{
+      total++;
+      const isDone=!!state.done[r.id];
+      if(isDone) done++;
+      const d=document.createElement('div');
+      d.className='routine-item'+(isDone?' done':'');
+      d.innerHTML=`<div class="r-check">${isDone?'✓':''}</div><div class="r-label">${r.label}</div><div class="r-time">${r.time}</div>`;
+      d.onclick=()=>toggleRoutine(r.id,d);
+      rWrap.appendChild(d);
+    });
+
+    // Free tasks
+    const fWrap=document.getElementById('free-'+cat);
+    fWrap.innerHTML='';
+    const freeItems=state.free[cat]||[];
+    if(freeItems.length){
+      const ttl=document.createElement('div');
+      ttl.style.cssText='font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:14px;margin-bottom:8px;font-weight:600;';
+      ttl.textContent='Meine Aufgaben';
+      fWrap.appendChild(ttl);
+      freeItems.forEach((item,i)=>{
+        total++;
+        if(item.done) done++;
+        const d=document.createElement('div');
+        d.className='free-item'+(item.done?' done':'');
+        d.innerHTML=`<div class="r-check" onclick="toggleFree('${cat}',${i})">${item.done?'✓':''}</div><div class="free-label">${item.text}</div><button class="del-btn" onclick="deleteFree('${cat}',${i})">×</button>`;
+        fWrap.appendChild(d);
+      });
+    }
+  });
+
+  // Update ring
+  const pct=total===0?0:Math.round(done/total*100);
+  const circ=131.9;
+  const offset=circ-(circ*pct/100);
+  document.getElementById('ringFg').style.strokeDashoffset=offset;
+  document.getElementById('ringTxt').textContent=pct+'%';
+  document.getElementById('summaryTitle').textContent=
+    pct===100?'Alles erledigt! 🎉':pct>50?'Super – mehr als die Hälfte! 💪':'Los geht\'s! 🚀';
+  document.getElementById('summarySub').textContent=
+    `${done} von ${total} Aufgaben erledigt`;
+}
+
+function toggleRoutine(id,el){
+  state.done[id]=!state.done[id];
+  el.classList.toggle('done');
+  const chk=el.querySelector('.r-check');
+  chk.textContent=state.done[id]?'✓':'';
+  el.querySelector('.r-label').style.textDecoration=state.done[id]?'line-through':'';
+  saveState(); updateRing();
+}
+
+function toggleFree(cat,i){
+  state.free[cat][i].done=!state.free[cat][i].done;
+  saveState(); renderPlanner();
+}
+
+function deleteFree(cat,i){
+  state.free[cat].splice(i,1);
+  saveState(); renderPlanner();
+}
+
+function addFree(cat){
+  const inp=document.getElementById('inp-'+cat);
+  const txt=inp.value.trim();
+  if(!txt) return;
+  if(!state.free[cat]) state.free[cat]=[];
+  state.free[cat].push({text:txt,done:false});
+  inp.value='';
+  saveState(); renderPlanner();
+}
+
+function updateRing(){
+  const cats=['training','hausarbeit','einkaufen','medizin'];
+  let total=0,done=0;
+  cats.forEach(cat=>{
+    ROUTINES[cat].forEach(r=>{ total++; if(state.done[r.id]) done++; });
+    (state.free[cat]||[]).forEach(i=>{ total++; if(i.done) done++; });
+  });
+  const pct=total===0?0:Math.round(done/total*100);
+  const offset=131.9-(131.9*pct/100);
+  document.getElementById('ringFg').style.strokeDashoffset=offset;
+  document.getElementById('ringTxt').textContent=pct+'%';
+  document.getElementById('summarySub').textContent=`${done} von ${total} Aufgaben erledigt`;
+  document.getElementById('summaryTitle').textContent=
+    pct===100?'Alles erledigt! 🎉':pct>50?'Super – mehr als die Hälfte! 💪':'Los geht\'s! 🚀';
+}
+
+function resetDay(){
+  if(!confirm('Tag zurücksetzen?')) return;
+  state={done:{},free:{training:[],hausarbeit:[],einkaufen:[],medizin:[]},day:todayKey};
+  saveState(); renderPlanner();
+}
+
+// ── CATEGORY FILTER ────────────────────────────────────
+const CAT_COLORS={training:'var(--orange)',hausarbeit:'var(--blue)',einkaufen:'var(--green)',medizin:'var(--purple)',all:'var(--gold)'};
+function filterCat(cat){
+  document.querySelectorAll('.cat-btn').forEach(b=>{
+    b.classList.remove('active');
+    b.style.background='';b.style.color='';b.style.borderColor='';
+  });
+  const btn=document.querySelector(`[data-cat="${cat}"]`);
+  btn.classList.add('active');
+  btn.style.background=CAT_COLORS[cat];btn.style.color='#0d1117';btn.style.borderColor='transparent';
+
+  const secs=['training','hausarbeit','einkaufen','medizin'];
+  secs.forEach(s=>{
+    const el=document.getElementById('sec-'+s);
+    el.classList.toggle('visible', cat==='all'||cat===s);
+  });
+}
+
+// ── TAB SWITCH ─────────────────────────────────────────
+function switchTab(tab){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.getElementById('scrollArea').scrollTop=0;
+}
+
+// ── BRIEFING ───────────────────────────────────────────
+const dateStr=`${DE_DAYS[now.getDay()]}, ${now.getDate()}. ${DE_MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+
+async function loadBriefing(){
+  const btn=document.getElementById('btnBrief');
+  btn.disabled=true;
+  document.getElementById('progWrap').style.display='block';
+  setP(5,'Starte…');
+
+  try{
+    setP(10,'📅 Kalender…');
+    const calTxt=await callAI(
+      `Alle Kalendertermine für heute ${dateStr} aus Google Calendar (Vienna-Zeit, 00:00-23:59). NUR JSON-Array: [{"time":"HH:MM","endtime":"HH:MM","title":"Titel","location":""}]. Leere Liste wenn keine. Kein anderer Text.`,
+      'gcal');
+    const events=tryJSON(calTxt)||[];
+
+    setP(35,'🌤 Wetter…');
+    const wxTxt=await callAI(
+      `Wettervorhersage heute ${dateStr} Innsbruck/Tirol Österreich. NUR JSON: {"emoji":"☀️","headline":"Kurze deutsche Zusammenfassung","low":0,"high":17,"sun":10,"rain":5,"wind":"leicht, 10 km/h Ost","detail":"2 Sätze auf Deutsch"}`,
+      'search');
+    const wx=tryJSON(wxTxt)||{emoji:'🌤',headline:'Sonnig',low:0,high:16,sun:9,rain:5,wind:'leicht',detail:''};
+
+    setP(60,'🏔 Tirol-News…');
+    const tiTxt=await callAI(
+      `4 wichtigste aktuelle Nachrichten aus Tirol Österreich heute oder letzte 2 Tage. NUR JSON-Array: [{"cat":"KATEGORIE","head":"Schlagzeile","sum":"1-2 Sätze auf Deutsch"}]`,
+      'search');
+    const tirolNews=tryJSON(tiTxt)||[];
+
+    setP(80,'🌍 Weltnews…');
+    const woTxt=await callAI(
+      `4 wichtigste internationale Nachrichten von heute oder gestern. NUR JSON-Array: [{"cat":"KATEGORIE","head":"Schlagzeile auf Deutsch","sum":"1-2 Sätze auf Deutsch"}]`,
+      'search');
+    const worldNews=tryJSON(woTxt)||[];
+
+    setP(100,'✓ Fertig!');
+    renderBriefing(events,wx,tirolNews,worldNews);
+
+  }catch(err){
+    document.getElementById('briefOutput').innerHTML=
+      `<div class="card"><div class="card-body" style="color:var(--red);font-size:13px;">⚠ Fehler: ${err.message}</div></div>`;
+  }
+  btn.disabled=false;
+  document.getElementById('btnTxt').textContent='↺ Aktualisieren';
+  setTimeout(()=>{document.getElementById('progWrap').style.display='none';setP(0,'');},1200);
+}
+
+function setP(v,lbl){
+  document.getElementById('progBar').style.width=v+'%';
+  if(lbl) document.getElementById('btnTxt').textContent=lbl;
+}
+
+async function callAI(prompt, mode){
+  const body={model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]};
+  if(mode==='search') body.tools=[{type:'web_search_20250305',name:'web_search'}];
+  if(mode==='gcal') body.mcp_servers=[{type:'url',url:'https://gcal.mcp.claude.com/mcp',name:'gcal'}];
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok) throw new Error('API '+res.status);
+  const d=await res.json();
+  return d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+}
+
+function tryJSON(t){
+  try{return JSON.parse(t.replace(/```json|```/g,'').trim());}
+  catch{const m=t.match(/(\[[\s\S]*?\]|\{[\s\S]*?\})/);if(m)try{return JSON.parse(m[1]);}catch{}return null;}
+}
+
+function renderBriefing(events,wx,tirol,world){
+  const html=`
+  <div class="card">
+    <div class="card-head"><div class="chip" style="background:rgba(230,184,74,0.15);">🌤</div><div class="card-label">Wetter · Tirol</div></div>
+    <div class="card-body">
+      <div class="weather-row">
+        <div class="weather-hl">${wx.emoji} ${wx.headline}</div>
+        <div class="weather-badge"><div class="temp">${wx.low}°–${wx.high}°</div><div class="tl">Min/Max</div></div>
+      </div>
+      ${wx.detail?`<div class="weather-detail">${wx.detail}</div>`:''}
+      <div class="pills">
+        ${wx.sun?`<span class="pill">☀ ${wx.sun}h Sonne</span>`:''}
+        ${wx.rain!==undefined?`<span class="pill">💧 ${wx.rain}% Regen</span>`:''}
+        ${wx.wind?`<span class="pill">💨 ${wx.wind}</span>`:''}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="chip" style="background:rgba(91,156,246,0.15);">📅</div><div class="card-label">Termine · Heute</div></div>
+    <div class="card-body">
+      ${events.length===0
+        ?'<p style="font-size:13px;color:var(--muted);font-style:italic;">Keine Termine für heute 🎉</p>'
+        :events.map(e=>`<div class="cal-item"><div class="cal-time">${e.time||'?'}</div><div><div class="cal-name">${e.title}</div>${e.location?`<div class="cal-loc">📍 ${e.location}</div>`:''}</div></div>`).join('')}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="chip" style="background:rgba(76,175,125,0.15);">🏔</div><div class="card-label">Nachrichten · Tirol</div></div>
+    <div class="card-body">
+      ${tirol.map(n=>`<div class="news-item"><div class="news-cat">${n.cat}</div><div class="news-head">${n.head}</div><div class="news-sum">${n.sum}</div></div>`).join('')||'<p style="font-size:13px;color:var(--muted);">Keine Daten</p>'}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="chip" style="background:rgba(224,90,71,0.15);">🌍</div><div class="card-label">Nachrichten · Weltweit</div></div>
+    <div class="card-body">
+      ${world.map(n=>`<div class="news-item"><div class="news-cat">${n.cat}</div><div class="news-head">${n.head}</div><div class="news-sum">${n.sum}</div></div>`).join('')||'<p style="font-size:13px;color:var(--muted);">Keine Daten</p>'}
+    </div>
+  </div>`;
+  document.getElementById('briefOutput').innerHTML=html;
+}
+
+// Init
+loadState();
+</script>
+</body>
+</html>
