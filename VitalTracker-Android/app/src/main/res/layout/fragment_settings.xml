@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="12dp">
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/settings_title" android:textSize="22sp" android:textStyle="bold"
+            android:textColor="@color/colorPrimary" android:layout_marginBottom="4dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/settings_subtitle" android:textSize="13sp"
+            android:textColor="@color/textSecondary" android:layout_marginBottom="16dp"/>
+
+        <!-- Persönliche Daten -->
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginBottom="10dp"
+            app:cardCornerRadius="14dp" app:cardElevation="2dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/section_person" style="@style/SectionTitle"/>
+
+                <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginBottom="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:hint="@string/settings_name">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/etName"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="textPersonName"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginBottom="10dp">
+                    <com.google.android.material.textfield.TextInputLayout android:layout_width="0dp"
+                        android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:hint="@string/settings_alter">
+                        <com.google.android.material.textfield.TextInputEditText android:id="@+id/etAge"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout android:layout_width="0dp"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:hint="@string/settings_groesse">
+                        <com.google.android.material.textfield.TextInputEditText android:id="@+id/etHeight"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_geschlecht" android:textSize="12sp"
+                    android:textColor="@color/textSecondary" android:layout_marginBottom="6dp"/>
+                <com.google.android.material.button.MaterialButtonToggleGroup android:id="@+id/toggleGender"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    app:singleSelection="true" app:selectionRequired="true">
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnMale"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/gender_m"/>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnFemale"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/gender_w"/>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnDiverse"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="@string/gender_d"/>
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Sportler -->
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginBottom="10dp"
+            app:cardCornerRadius="14dp" app:cardElevation="2dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/section_activity" style="@style/SectionTitle"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/settings_sportler" android:textSize="15sp" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/settings_sportler_desc" android:textSize="12sp"
+                            android:textColor="@color/textSecondary"/>
+                    </LinearLayout>
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchAthlete"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Normalwerte Info -->
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginBottom="20dp"
+            app:cardCornerRadius="14dp" app:cardElevation="2dp"
+            app:cardBackgroundColor="#EFF6FF">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/section_normals" style="@style/SectionTitle"/>
+                <TextView android:id="@+id/tvNormals" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textSize="13sp" android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnSave"
+            android:layout_width="match_parent" android:layout_height="54dp"
+            android:text="@string/btn_save_settings" android:textSize="16sp"
+            app:cornerRadius="12dp" android:layout_marginBottom="8dp"/>
+    </LinearLayout>
+</ScrollView>
