@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VitalTracker</string>
+    <string name="nav_eingabe">Eingabe</string>
+    <string name="nav_verlauf">Verlauf</string>
+    <string name="nav_einstellungen">Einstellungen</string>
+
+    <string name="label_datum">Messdatum</string>
+    <string name="label_gewicht">Gewicht</string>
+    <string name="label_blutdruck">Blutdruck</string>
+    <string name="label_puls">Puls</string>
+    <string name="label_sauerstoff">Sauerstoffsättigung</string>
+    <string name="label_sys">Blutdruck (systolisch)</string>
+    <string name="label_dia">Blutdruck (diastolisch)</string>
+    <string name="bmi_display">BMI %.1f · %s</string>
+
+    <string name="hint_weight">z.B. 75.5</string>
+    <string name="hint_sys">Oberer Wert (120)</string>
+    <string name="hint_dia">Unterer Wert (80)</string>
+    <string name="hint_pulse">z.B. 72</string>
+    <string name="hint_oxygen">z.B. 98</string>
+    <string name="hint_notes">Notizen (optional)</string>
+
+    <string name="btn_save">Messung speichern</string>
+    <string name="btn_save_settings">Einstellungen speichern</string>
+
+    <string name="settings_title">Persönliche Daten</string>
+    <string name="settings_subtitle">Grundlage für Ihre persönlichen Normalwerte.</string>
+    <string name="section_person">Persönliche Angaben</string>
+    <string name="section_activity">Aktivität</string>
+    <string name="section_normals">Ihre berechneten Normalwerte</string>
+    <string name="settings_name">Name (optional)</string>
+    <string name="settings_alter">Alter (Jahre)</string>
+    <string name="settings_groesse">Größe (cm)</string>
+    <string name="settings_geschlecht">Geschlecht</string>
+    <string name="gender_m">Männlich</string>
+    <string name="gender_w">Weiblich</string>
+    <string name="gender_d">Divers</string>
+    <string name="settings_sportler">Sportler / Athletin</string>
+    <string name="settings_sportler_desc">Puls-Normalbereich: 40–100 bpm</string>
+
+    <string name="norm_bp_sys">Blutdruck sys.:  %d – %d mmHg</string>
+    <string name="norm_bp_dia">Blutdruck dia.:  %d – %d mmHg</string>
+    <string name="norm_pulse">Puls:             %d – %d bpm</string>
+    <string name="norm_oxygen">Sauerstoff:      %.0f – %.0f %%</string>
+    <string name="norm_weight">Normalgewicht:   %.1f – %.1f kg</string>
+
+    <string name="normal_range">Normalbereich: %.0f – %.0f</string>
+    <string name="legend_value">Messwert</string>
+    <string name="legend_normal">Normalwert (rote Linien)</string>
+    <string name="limit_max">Max</string>
+    <string name="limit_min">Min</string>
+    <string name="status_ok">Normal</string>
+    <string name="status_high">Zu hoch</string>
+    <string name="status_low">Zu niedrig</string>
+    <string name="no_data">Noch keine Messungen vorhanden.\nBitte tragen Sie Werte auf der Eingabe-Seite ein.</string>
+
+    <string name="saved">✓ Messung gespeichert!</string>
+    <string name="settings_saved">✓ Einstellungen gespeichert!</string>
+
+    <string name="err_required">Bitte alle Felder ausfüllen.</string>
+    <string name="err_weight">Gewicht: 20–300 kg</string>
+    <string name="err_bp">Blutdruckwert außerhalb des gültigen Bereichs.</string>
+    <string name="err_pulse">Puls: 20–250 bpm</string>
+    <string name="err_oxygen">Sauerstoffsättigung: 50–100 %</string>
+    <string name="err_age">Alter ungültig (1–120 Jahre)</string>
+    <string name="err_height">Körpergröße ungültig (50–250 cm)</string>
+</resources>

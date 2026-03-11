@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- Open this file in a browser to generate the PNG icons for the PWA -->
+<html><body>
+<canvas id="c192" width="192" height="192" style="display:none"></canvas>
+<canvas id="c512" width="512" height="512" style="display:none"></canvas>
+<a id="dl192" download="icon-192.png">Download icon-192.png</a><br>
+<a id="dl512" download="icon-512.png">Download icon-512.png</a>
+<script>
+function drawIcon(canvas) {
+  const s = canvas.width, ctx = canvas.getContext('2d');
+  const sc = s / 108;
+
+  // Blue circle bg
+  ctx.beginPath(); ctx.arc(s/2,s/2,s/2,0,Math.PI*2);
+  ctx.fillStyle='#64B5F6'; ctx.fill();
+
+  // Shadow wedge
+  ctx.beginPath(); ctx.moveTo(82*sc,26*sc); ctx.lineTo(s,52*sc);
+  ctx.lineTo(s,s); ctx.lineTo(62*sc,s); ctx.closePath();
+  ctx.fillStyle='#4A90D9'; ctx.fill();
+
+  // Phone body
+  roundRect(ctx,37*sc,20*sc,34*sc,68*sc,6*sc,'#ECEFF1');
+
+  // Notch
+  roundRect(ctx,46*sc,22*sc,16*sc,4*sc,2*sc,'#90A4AE');
+
+  // Heart
+  ctx.save(); ctx.translate(54*sc,52*sc); ctx.scale(sc,sc);
+  ctx.beginPath();
+  ctx.moveTo(0,14); ctx.bezierCurveTo(-3,10,-12,8,-12,2);
+  ctx.bezierCurveTo(-12,-5,-3,-12,0,-8);
+  ctx.bezierCurveTo(3,-12,12,-5,12,2);
+  ctx.bezierCurveTo(12,8,3,10,0,14);
+  ctx.fillStyle='#FF5722'; ctx.fill(); ctx.restore();
+
+  // ECG line
+  ctx.save(); ctx.scale(sc,sc);
+  ctx.beginPath();
+  ctx.moveTo(38,52); ctx.lineTo(44,52); ctx.lineTo(47,46);
+  ctx.lineTo(50,58); ctx.lineTo(53,50); ctx.lineTo(56,54);
+  ctx.lineTo(59,52); ctx.lineTo(70,52);
+  ctx.strokeStyle='#455A64'; ctx.lineWidth=2.2;
+  ctx.lineJoin='round'; ctx.stroke(); ctx.restore();
+
+  // Bottom bars
+  roundRect(ctx,44*sc,72*sc,20*sc,3*sc,1.5*sc,'#90A4AE');
+  roundRect(ctx,44*sc,78*sc,20*sc,3*sc,1.5*sc,'#90A4AE');
+}
+
+function roundRect(ctx,x,y,w,h,r,fill) {
+  ctx.beginPath(); ctx.roundRect(x,y,w,h,r);
+  ctx.fillStyle=fill; ctx.fill();
+}
+
+[192,512].forEach(sz => {
+  const c = document.getElementById('c'+sz);
+  drawIcon(c);
+  document.getElementById('dl'+sz).href = c.toDataURL('image/png');
+});
+</script>
+</body></html>
