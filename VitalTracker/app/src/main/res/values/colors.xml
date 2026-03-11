@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand -->
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1565C0</color>
+    <color name="colorAccent">#FF6B35</color>
+
+    <!-- Background -->
+    <color name="background">#F5F7FA</color>
+
+    <!-- Text -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+
+    <!-- Vital Sign Colors -->
+    <color name="color_weight">#8B5CF6</color>
+    <color name="color_blood_pressure">#EF4444</color>
+    <color name="color_pulse">#F97316</color>
+    <color name="color_oxygen">#3B82F6</color>
+
+    <!-- Chart normal limit lines (red) -->
+    <color name="color_normal_limit">#DC2626</color>
+
+    <!-- Status colors -->
+    <color name="color_status_normal">#16A34A</color>
+    <color name="color_status_high">#DC2626</color>
+    <color name="color_status_low">#2563EB</color>
+
+    <!-- Info card background -->
+    <color name="color_info_bg">#EFF6FF</color>
+</resources>

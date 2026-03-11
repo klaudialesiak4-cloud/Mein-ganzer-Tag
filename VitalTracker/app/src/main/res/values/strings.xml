@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VitalTracker</string>
+
+    <!-- Navigation -->
+    <string name="menu_eingabe">Eingabe</string>
+    <string name="menu_verlauf">Verlauf</string>
+    <string name="menu_einstellungen">Einstellungen</string>
+
+    <!-- Input Labels -->
+    <string name="label_datum">Messdatum</string>
+    <string name="label_gewicht">Gewicht</string>
+    <string name="label_blutdruck">Blutdruck</string>
+    <string name="label_puls">Puls</string>
+    <string name="label_sauerstoff">Sauerstoffsättigung</string>
+    <string name="label_systolisch">Blutdruck (systolisch)</string>
+    <string name="label_diastolisch">Blutdruck (diastolisch)</string>
+    <string name="label_messung_vom">Messung vom %s</string>
+    <string name="label_bmi_value">BMI %.1f · %s</string>
+
+    <!-- Input Hints -->
+    <string name="hint_gewicht">z.B. 75.5</string>
+    <string name="hint_systolisch">Oberer Wert (z.B. 120)</string>
+    <string name="hint_diastolisch">Unterer Wert (z.B. 80)</string>
+    <string name="hint_puls">z.B. 72</string>
+    <string name="hint_sauerstoff">z.B. 98.0</string>
+    <string name="hint_notizen">Notizen (optional)</string>
+
+    <!-- Buttons -->
+    <string name="btn_datum_waehlen">Datum wählen</string>
+    <string name="btn_speichern">Messung speichern</string>
+    <string name="btn_einstellungen_speichern">Einstellungen speichern</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Persönliche Daten</string>
+    <string name="settings_subtitle">Diese Daten werden zur Berechnung Ihrer persönlichen Normalwerte verwendet.</string>
+    <string name="settings_section_person">Persönliche Angaben</string>
+    <string name="settings_section_aktivitaet">Aktivität</string>
+    <string name="settings_section_normalwerte">Ihre berechneten Normalwerte</string>
+    <string name="settings_name">Name (optional)</string>
+    <string name="settings_alter">Alter (Jahre)</string>
+    <string name="settings_groesse">Körpergröße (cm)</string>
+    <string name="settings_geschlecht">Geschlecht</string>
+    <string name="settings_maennlich">Männlich</string>
+    <string name="settings_weiblich">Weiblich</string>
+    <string name="settings_divers">Divers</string>
+    <string name="settings_sportler">Sportler / Athletin</string>
+    <string name="settings_sportler_desc">Senkt den Normalbereich des Pulses auf 40–100 bpm</string>
+
+    <!-- Normal values display -->
+    <string name="normal_bp_sys">Blutdruck (systolisch):   %d – %d mmHg</string>
+    <string name="normal_bp_dia">Blutdruck (diastolisch):  %d – %d mmHg</string>
+    <string name="normal_pulse">Puls:                     %d – %d bpm</string>
+    <string name="normal_oxygen">Sauerstoffsättigung:      %.0f – %.0f %%</string>
+    <string name="normal_weight_range">Normalgewicht:            %.1f – %.1f kg</string>
+
+    <!-- Chart -->
+    <string name="chart_verlauf_title">Verlauf (%s) in %s</string>
+    <string name="normal_range_generic">Normalbereich: %d – %d</string>
+    <string name="normal_range_weight">Normalbereich: %.1f – %.1f kg</string>
+    <string name="normal_range_oxygen">Normalbereich: %.0f – %.0f %%</string>
+    <string name="legend_messwert">Messwert</string>
+    <string name="legend_normalbereich">Normalbereich (rote Linien)</string>
+    <string name="limit_max">Max</string>
+    <string name="limit_min">Min</string>
+
+    <!-- Status -->
+    <string name="status_normal">Normal</string>
+    <string name="status_zu_hoch">Zu hoch</string>
+    <string name="status_zu_niedrig">Zu niedrig</string>
+
+    <!-- Messages -->
+    <string name="msg_gespeichert">Messung gespeichert!</string>
+    <string name="msg_einstellungen_gespeichert">Einstellungen gespeichert!</string>
+    <string name="msg_keine_daten">Noch keine Messungen vorhanden.\nBitte tragen Sie Ihre Werte auf der Eingabe-Seite ein.</string>
+
+    <!-- Errors -->
+    <string name="error_pflichtfelder">Bitte alle Felder ausfüllen.</string>
+    <string name="error_ungueltige_werte">Ungültige Eingabe. Bitte Zahlen eingeben.</string>
+    <string name="error_gewicht_bereich">Gewicht muss zwischen 20 und 300 kg liegen.</string>
+    <string name="error_blutdruck_bereich">Blutdruckwert außerhalb des gültigen Bereichs.</string>
+    <string name="error_puls_bereich">Puls muss zwischen 20 und 250 bpm liegen.</string>
+    <string name="error_sauerstoff_bereich">Sauerstoffsättigung muss zwischen 50 und 100 % liegen.</string>
+    <string name="error_alter_ungueltig">Bitte ein gültiges Alter (1–120 Jahre) eingeben.</string>
+    <string name="error_groesse_ungueltig">Bitte eine gültige Körpergröße (50–250 cm) eingeben.</string>
+</resources>
